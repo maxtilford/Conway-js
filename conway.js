@@ -8,7 +8,7 @@ function posUniq(a) {
     var r = [];
     o:for(var i = 0, n = a.length; i < n; i++) {
            for(var x = 0, y = r.length; x < y; x++) {
-                   if(posEq(r[x],a[i])) continue o;
+                   if(_.isEqual(r[x],a[i])) continue o;
                }
            r[r.length] = a[i];
        }
@@ -17,7 +17,7 @@ function posUniq(a) {
 
 function posEq(p,q) { return p.x == q.x && p.y == q.y; }
 
-function isAlive(b,p) { return _(b).any(_(posEq).bind({},p)); }
+function isAlive(b,p) { return _(b).any(_(_.isEqual).bind({},p)); }
 
 function neighbors(b,p) {
     return _.map([P(p.x-1,p.y-1),P(p.x,p.y-1),P(p.x+1,p.y-1),
