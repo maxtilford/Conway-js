@@ -100,12 +100,12 @@ function main() {
      $('.cell').remove(); 
      showBoard(board);
      board = step(board);
-     if (conwayGo) { setTimeout("main()", 350); }
+     if (conwayGo) { setTimeout("main()", 200); }
 }
 
 $(document).ready(function() { 
         main();
-        $('.cell').click(function() { toggleConway(); });
+        $('#go').click(function() { toggleConway(); });
 });
 
 function toggleConway() {

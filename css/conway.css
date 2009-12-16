@@ -1,0 +1,11 @@
+
+.cell { 
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    background-color: black;
+}
+
+menu { text-align: center; }
+
+command { display: block; }
