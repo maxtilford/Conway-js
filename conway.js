@@ -16,7 +16,7 @@ Set.prototype = {
     },
     
     union: function(other) {    
-        return PointSet(this.toPoints().concat(other.toPoints()));
+        return listToSet(this.toPoints().concat(other.toPoints()));
     },
     
     insert: function(p) {
@@ -26,9 +26,9 @@ Set.prototype = {
     }
 };
 
-function PointSet(points) {
-    return _(points).reduce(new Set(),
-                            function(set,p) { return set.insert(p); });
+function listToSet(elems) {
+    return _(elems).reduce(new Set(),
+                            function(set,e) { return set.insert(e); });
 }
 
 
@@ -49,7 +49,7 @@ function wrap(p) {
              mod(p.y, getHeight()));
 }
 
-// % does not behave the way I need it to for negative numbers
+// % does not wrap around on negative numbers. This will.
 function mod(x,y) { return (x < 0) ? y + x : x % y; }
 
 function numLiveNeighbors(b,p) {
@@ -57,14 +57,14 @@ function numLiveNeighbors(b,p) {
 }
 
 function deadNeighbors(b,p) {
-    return PointSet( _(neighbors(p)).reject(_(b.inSet).bind(b)));
+    return listToSet( _(neighbors(p)).reject(_(b.inSet).bind(b)));
 }
 
 // The step function finds all the cells that *could* be alive next turn,
 // and then keeps only those actually will.
 function step(b) { 
     var changeable_cells = _(b.toPoints()).reduce(b, function(set, p) { return set.union(deadNeighbors(b,p)); });
-    return PointSet(_(changeable_cells.toPoints()).select(function(p) {
+    return listToSet(_(changeable_cells.toPoints()).select(function(p) {
                 var ns = numLiveNeighbors(b,p);
                 return ns == 3 || (ns == 2 && b.inSet(p));
             }));
@@ -93,7 +93,7 @@ function getWidth() { return Math.ceil(window.innerWidth/12); }
 function getHeight() { return Math.ceil(window.innerHeight/12); }
 
 // initialization
-board = PointSet(four_gliders_one_spaceship);
+board = listToSet(four_gliders_one_spaceship);
 
 conwayGo = false;
 
