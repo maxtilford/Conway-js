@@ -4,11 +4,7 @@ Set.prototype = {
    
     toPoints: function() {
         var points = [];
-        _(this.set).each(function(ys, x) {
-                _(ys).each(function(isIn,y) {
-                        if (isIn === true) { points.push(P(x,y)); }
-                    });
-            });
+        this.each(function(x,y) { points.push(P(x,y)); });
         return points;
     },
 
@@ -16,6 +12,14 @@ Set.prototype = {
         if (!this.set[p.x]) { this.set[p.x] = []; }
         this.set[p.x][p.y] = true;
         return this;
+    },
+    
+    each: function(f) {
+        _(this.set).each(function(ys,x) {
+            _(ys).each(function(isIn,y) {
+                    if (isIn === true) { f(x,y); }
+                });
+            });
     }
         
 };
@@ -57,7 +61,7 @@ function step(b) {
         .reduce(b.toPoints(),function(lst,p) {return lst.concat(p.neighbors());})
         .each(function(p) {
                 if (!next_b.includes(p)) {
-                    var ns = _(p.neighbors()).select(_(b.includes).bind(b)).length;
+                    var ns = _(p.neighbors()).select(b.includes,b).length;
                     if (ns == 3 || (ns == 2 && b.includes(p))) {
                         next_b.insert(p);
                     }
@@ -94,8 +98,8 @@ function showBoard(b) {
             }));
 }
 
-function getWidth() { return Math.ceil(window.innerWidth/12); }
-function getHeight() { return Math.ceil(window.innerHeight/12); }
+function getWidth() { return Math.ceil(document.width/12); }
+function getHeight() { return Math.ceil(document.height/12); }
 
 // initialization
 board = listToSet(glider_and_ships);
