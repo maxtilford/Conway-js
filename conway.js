@@ -98,8 +98,8 @@ function showBoard(b) {
             }));
 }
 
-function getWidth() { return Math.ceil(document.width/12); }
-function getHeight() { return Math.ceil(document.height/12); }
+function getWidth() { return Math.ceil($(document).width()/12); }
+function getHeight() { return Math.ceil($(document).height()/12); }
 
 // initialization
 board = listToSet(glider_and_ships);
